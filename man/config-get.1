@@ -1,0 +1,48 @@
+.TH CONFIG-GET 1 2016-02-06
+
+.SH NAME
+config-get \- read values from a libconfig-style configuration file
+
+.SH SYNOPSIS
+\fBconfig-get\fP [opts] key
+
+.SH DESCRIPTION
+config-get is a utility for reading values from a libconfig-style
+configuration file to the command line. 
+
+.SH OPTIONS
+.TP
+\fB-h, --help\fP
+Show the help text and exit.
+.TP
+\fB-f FILE, --file=FILE\fP
+Path to a configuration file. If not specified, the program will instead
+read a configuration from standard in.
+
+.TP
+\fB-t TYPE, --type=TYPE\fP
+Specifies the expected type of the read value. Possible values are "number",
+"string", and "boolean". The behavior if the expected and found type do not
+match is determined via the \fB--match\fP flag. If this flag is not present,
+then any scalar value is acceptable.
+
+.TP
+\fB-m MODE, --match=MODE\fP
+Type matching behavior if found and specified types do not match.
+Possible values are "strict", "loose", "warn", and "ignore".
+If "strict", the program will print nothing and exit with failure.
+If "loose", the program will print the value found, but exit with failure.
+If "warn", the program will print a warning along with the value found,
+and exit with success.
+If "ignore", the program will print the value found and exit with success.
+Defaults to "warn".
+
+.SH EXAMPLES
+$ config-get --file=/path/to/my.conf my.name
+
+$ config-get -t string -m strict my.name \fB<\fP my.conf
+
+$ echo "my { friends: [\\"alice\\", \\"bob\\"]; }" | config-get my.friends.[0]
+
+.SH "SEE ALSO"
+`info libconfig`
